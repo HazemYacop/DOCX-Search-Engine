@@ -39,6 +39,9 @@ class Package:
 
     @staticmethod
     def search(keyword, docx_text):
+        special_characters = [
+            "۞"
+        ]
         # Searching For Keyword
         results = []
         if " " in keyword:
@@ -46,21 +49,19 @@ class Package:
             while index < len(docx_text):
                 if docx_text[index:index + len(keyword)] == keyword:
                     first_index = index
-                    while True:
-                        if ' ' == docx_text[first_index]:
-                            first_index += 1
-                            break
-                        else:
-                            first_index -= 1
+                    while ' ' != docx_text[first_index]:
+                        first_index -= 1
 
                     last_index = index + len(keyword) - 1
-                    while True:
-                        if ' ' == docx_text[last_index]:
-                            last_index -= 1
-                            break
-                        else:
-                            last_index += 1
-                    results.append(docx_text[first_index:last_index])
+                    while ' ' != docx_text[last_index]:
+                        last_index += 1
+
+                    # Remove special characters and delete empty space
+                    for character in special_characters:
+                        if docx_text[first_index:last_index].replace(character, "").strip() not in results:
+                            results.append(docx_text[first_index:last_index].replace(character, "").strip())
+
+
 
                 index += 1
             return results
