@@ -13,7 +13,7 @@ class Main:
         self.UserInterface = UserInterface()
         self.UserInterface.stackedWidget.setCurrentIndex(0)
 
-        # Button(s) Fun(s)
+        # Button(s) Functions(s)
         self.UserInterface.StartButton.clicked.connect(lambda: [self.required_data(), threading.Thread(target=self.main).start(), self.UserInterface.stackedWidget.setCurrentIndex(1), self.UserInterface.transition([self.UserInterface.stackedWidget]), self.UserInterface.WorkingLabel.setText("Working ..."), self.UserInterface.BackToMainPageButton.setDisabled(True), self.UserInterface.CopyReslutsButton.setDisabled(True), self.UserInterface.EmailCopiedSuccessfullyLabel.setText("")])
         self.UserInterface.DOCXFileButton.clicked.connect(lambda: self.UserInterface.DOCXFileButton.setText(Package.ask_for_file()))
         self.UserInterface.CopyReslutsButton.clicked.connect(lambda: [pandas.DataFrame(self.results).to_clipboard(index=False, header=False), self.UserInterface.EmailCopiedSuccessfullyLabel.setText("Copied !")])
@@ -27,8 +27,7 @@ class Main:
             for paragraph in docx.Document(self.docx_file).paragraphs:
                 docx_text.append(paragraph.text)
 
-            # Searching for keyword
-            self.results = Package.search(self.keyword, '\n'.join(docx_text))
+            self.results = Package.search(self.keyword, '\n'.join(docx_text))  # Searches for keyword
 
             # Re-translating UI
             self.UserInterface.WorkingLabel.setText(f"Program finished\nResults : {len(self.results)}")

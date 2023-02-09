@@ -40,8 +40,10 @@ class Package:
     @staticmethod
     def search(keyword, docx_text):
         special_characters = [
-            "۞"
+            "۞",
+            "ɸ"
         ]
+
         # Searching For Keyword
         results = []
         if " " in keyword:
@@ -61,15 +63,15 @@ class Package:
                         if docx_text[first_index:last_index].replace(character, "").strip() not in results:
                             results.append(docx_text[first_index:last_index].replace(character, "").strip())
 
-
-
                 index += 1
             return results
 
         else:
             for word in docx_text.split():
                 if keyword in word:
-                    results.append(word)
+                    for character in special_characters:
+                        if word.replace(character, "").strip() not in results:
+                            results.append(word.replace(character, "").strip())
             return results
 
     @staticmethod
